@@ -1,0 +1,56 @@
+version 2.13.0 (2013-03-28)
+	* Implements basic MMA attack protection for RSA1_5 JWE algorithm (issue
+	  #23).
+
+version 2.26.1 (2014-07-14)
+    * Removes checked exception from RSA1_5.decryptCEK(...) to minimise
+      exposure to timing attacks for JWE with RSA1_5 (issue #91).
+
+version 3.1.2 (2014-09-01)
+    * Closes timing attack vulnerability in MACVerifier for JWS with HS256,
+      HS384 and HS512 (issue #107).
+
+version 4.34.2 (2017-02-28)
+    * Adds an explicit check during ECDH decryption to ensure the submitted
+      ephemeral public EC key is on the same curve as the private EC key.
+      Intended to prevent an "Invalid Curve Attack" with JCA providers that
+      don't perform this check internally. See http://c2id.co/3n for details.
+      Affected is the default Java SUN JCA provider that comes with Java prior
+      to version 1.8.0_51. Later Java versions and the BouncyCastle JCA
+      provider are not affected (issue #210). Allocated CVE-2017-12974.
+
+version 4.39 (2017-06-02)
+    * Fixes authenticated AES/CBC decryption to prevent Padding Oracle attacks
+      in JWE with A128CBC-HS256, A192CBC-HS384 and A256CBC-HS512 encryption
+      method (issue #223). Allocated CVE-2017-12973.
+    * Fixes authenticated AES/CBC decryption to prevent integer overflow
+      attacks that can cause the HMAC check to be bypassed. Affected is JWE
+      decryption with A128CBC-HS256, A192CBC-HS384 and A256CBC-HS512 encryption
+      method (issue #224). Allocated CVE-2017-12972.
+
+version 5.5 (2018-02-27)
+    * Adds required JWK constructor check of the first certificate in the X.509
+      certificate chain parameter ("x5c") to ensure its public subject key info
+      matches the JWK type and public parameters ("n" and "e" for an RSA JWK,
+      "x" and "y" for an EC JWK) (iss #237).
+
+version 6.0 (2018-07-24)
+    * Refactors the Base64 and Base64URL codec utilities to prevent potential
+      cache timing attacks due to use of table lookups. The Base64URL utility
+      is used to decode the encrypted key portion in a JWE object (iss #270).
+
+version 7.9 (2019-10-05)
+    * Fixes NPE when parsing JOSE header with missing or null "alg" (iss #332).
+      Allocated CVE-2019-17195.
+    * Fixes IllegalArgumentException when parsing JOSE header with null "typ"
+      (iss #333). Allocated CVE-2019-17195.
+    * Fixes NPE when parsing JOSE header with null "crit" (iss #334). Allocated
+      CVE-2019-17195.
+    * Fixes NPE when parsing JOSE header with null "jwk" (iss #335). Allocated
+      CVE-2019-17195.
+    * Fixes NPE when parsing JOSE header with null BASE64 or BASE65URL encoded
+      parameters (iss #336). Allocated CVE-2019-17195.
+    * Fixes IllegalArgumentException when parsing JWE header with null "zip"
+      (iss #337). Allocated CVE-2019-17195.
+    * Catch unexpected exceptions in JSONObjectUtils.parse and rethrow as
+      ParseException. Allocated CVE-2019-17195.
